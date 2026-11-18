@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WP Memberships 3.1 — Turn Your WordPress Site Into a Members-Only Hub</title>
+  <meta name="description" content="WP Memberships 3.1 adds applications, approvals, a member directory, profile photos, and moderated member content to any WordPress site." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <style>
+    :root{
+      --ink:#111a2a; --muted:#5b6d82; --soft:#eef7ff; --soft2:#f6fbff; --line:#dbe9f7;
+      --blue:#0b66d8; --blue2:#0f8eff; --teal:#10b9a7; --dark:#061d33; --white:#fff;
+      --shadow:0 18px 45px rgba(9,34,60,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.6;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1120px,calc(100% - 44px));margin-inline:auto}
+    .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(219,233,247,.8)}
+    .nav{height:68px;display:flex;align-items:center;gap:24px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.03em;margin-right:auto}
+    .brand span{font-size:20px}.brand b{color:var(--blue)}
+    .navlinks{display:flex;align-items:center;gap:22px;font-size:13px;font-weight:800;color:#26364a}.navlinks a:hover{color:var(--blue)}
+    .pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 18px;font-weight:900;font-size:13px;line-height:1;border:1px solid transparent;white-space:nowrap;transition:.18s ease;cursor:pointer}
+    .pill.primary{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;box-shadow:0 12px 25px rgba(15,142,255,.22)}
+    .pill.primary:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(15,142,255,.28)}
+    .pill.secondary{background:#fff;color:var(--ink);border-color:var(--line)}.pill.secondary:hover{border-color:var(--blue);color:var(--blue)}
+    .hero{position:relative;background:radial-gradient(circle at 80% 12%,#e8fbff 0 24%,transparent 24%),linear-gradient(135deg,#fbfdff 0%,#f3f9ff 58%,#f0fffc 100%);padding:80px 0 96px;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1fr 470px;align-items:center;gap:70px;position:relative;z-index:1}
+    .eyebrow{font-size:12px;font-weight:900;letter-spacing:.17em;color:var(--teal);text-transform:uppercase;margin-bottom:14px}
+    h1{font-size:52px;line-height:1.06;letter-spacing:-.05em;margin-bottom:22px;max-width:650px}.grad{background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:18px;color:var(--muted);max-width:620px;margin-bottom:28px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.chips{display:flex;gap:10px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:rgba(255,255,255,.7);border-radius:999px;padding:7px 12px;font-size:12px;color:#52657b;font-weight:700}
+    .hero-card{background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:20px;position:relative}
+    .app-window{background:#101d31;border-radius:20px;overflow:hidden}.window-top{height:52px;background:#172943;display:flex;align-items:center;gap:10px;padding:0 18px}.dot{width:12px;height:12px;border-radius:50%}.dot.r{background:#ff6b6b}.dot.y{background:#ffd166}.dot.g{background:#06d6a0}.window-body{padding:24px;color:#c9d1e0;font-family:monospace;font-size:13.5px;line-height:1.7}
+    .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}.strip-grid{display:grid;grid-template-columns:repeat(4,1fr)}.strip-item{padding:25px 20px;border-right:1px solid var(--line)}.strip-item:last-child{border-right:none}.strip-item b{display:block;color:var(--blue);font-size:13px;margin-bottom:5px}.strip-item span{font-size:13px;color:var(--muted)}
+    section{padding:82px 0}.center{text-align:center}.section-tag{font-size:12px;font-weight:900;letter-spacing:.18em;color:var(--teal);text-transform:uppercase;margin-bottom:10px}.section-title{font-size:36px;line-height:1.15;letter-spacing:-.035em;margin-bottom:15px}.section-lead{color:var(--muted);max-width:720px;margin:0 auto 34px;font-size:16px}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{border:1px solid var(--line);background:#fff;border-radius:var(--radius);padding:28px;box-shadow:0 12px 28px rgba(9,34,60,.05);transition:.18s ease;text-align:left}.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.icon{width:48px;height:48px;border-radius:14px;background:#eef7ff;color:var(--blue);display:grid;place-items:center;font-size:22px;font-weight:900;margin-bottom:18px}.card h3{font-size:18px;margin-bottom:8px}.card p{color:var(--muted);font-size:14px}
+    .how{background:linear-gradient(135deg,#f5fbff,#f1fffc)}.how-grid{display:grid;grid-template-columns:1fr 440px;gap:60px;align-items:start}.steps{margin-top:20px;border-top:1px solid #cddfed}.step{display:grid;grid-template-columns:44px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid #cddfed}.num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px}.step h3{font-size:17px;margin-bottom:4px}.step p{font-size:14px;color:var(--muted)}
+    .access-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:var(--shadow)}.access-box h3{font-size:20px;margin-bottom:14px;color:var(--ink)}.access-item{padding:14px 0;border-bottom:1px solid var(--line)}.access-item:last-child{border-bottom:none;padding-bottom:0}.access-item b{display:block;color:var(--blue);font-size:14px;margin-bottom:4px}.access-item p{font-size:14px;color:var(--muted)}
+    .faq{background:#fff}.faq-wrap{max-width:780px;margin:0 auto}
+    details{border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:14px;background:#fff;box-shadow:0 4px 12px rgba(9,34,60,.03);transition:.18s ease}
+    details[open]{border-color:var(--blue);box-shadow:0 8px 20px rgba(11,102,216,.08)}
+    summary{font-weight:800;cursor:pointer;font-size:16px;color:var(--ink);outline:none}
+    details p{color:var(--muted);margin:12px 0 0;font-size:15px}
+    .requirements{background:#f5fbff}.req-grid{display:grid;grid-template-columns:1fr 460px;gap:70px;align-items:center}.list{list-style:none;margin:24px 0}.list li{padding:12px 0;border-bottom:1px solid #d7e6f5;color:#334459;font-size:15px}.check{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:900;margin-right:10px}
+    .contact{background:linear-gradient(135deg,#eef7ff,#f2fffc)}.contact-grid{display:grid;grid-template-columns:1fr 380px;gap:70px;align-items:center}.contact-card{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:26px}.contact-card b{display:block;margin-bottom:6px;font-size:17px}.contact-card a{display:block;color:var(--blue);font-weight:800;font-size:14px;margin-top:8px}
+    footer{background:var(--dark);color:#c8d5e5;padding:24px 0;font-size:13px}.foot{display:flex;align-items:center;justify-content:space-between;gap:20px}.foot a{color:#fff;font-weight:800}
+    @media (max-width:900px){.nav{height:auto;padding:14px 0;align-items:flex-start}.navlinks{display:none}.hero-grid,.how-grid,.req-grid,.contact-grid{grid-template-columns:1fr}.hero{padding:54px 0}h1{font-size:38px}.features,.strip-grid{grid-template-columns:1fr}.strip-item{border-right:none;border-bottom:1px solid var(--line)}.foot{display:block}.foot a{display:block;margin-top:12px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top">WP <b>Memberships</b></a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#features">Features</a><a href="#how">How It Works</a><a href="#faq">FAQ</a><a href="brochure.html">Brochure</a><a href="#contact">Contact</a>
+      </nav>
+      <a class="pill secondary" href="brochure.html">Brochure</a>
+      <a class="pill primary" href="https://github.com/aatayyab/wpmemberships/releases/latest" target="_blank" rel="noopener noreferrer">Download v3.1</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Release 3.1 · WordPress Membership Plugin</div>
+          <h1>Turn your WordPress site into a <span class="grad">members-only hub</span></h1>
+          <p class="lead">Accept applications, approve members, give them a private portal with their own photo and content, and publish their approved posts to your blog. All from one dashboard page.</p>
+          <div class="actions">
+            <a class="pill primary" href="https://github.com/aatayyab/wpmemberships/releases/latest" target="_blank" rel="noopener noreferrer">Download free plugin</a>
+            <a class="pill secondary" href="docs/HELP.md" target="_blank" rel="noopener noreferrer">Read the help guide</a>
+          </div>
+          <div class="chips"><span class="chip">No Coding Required</span><span class="chip">One-Click Approvals</span><span class="chip">Member Directory &amp; Portal</span><span class="chip">GPL-2.0 Open Source</span></div>
+        </div>
+        <div class="hero-card">
+          <div class="app-window">
+            <div class="window-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+            <div class="window-body">
+              <span style="color:#06d6a0;">✓ Plugin Activated:</span> 3 pages created automatically<br>
+              <span style="color:#4f8ef7;">→ Join Page:</span> Online applications open<br>
+              <span style="color:#4f8ef7;">→ Member Portal:</span> Profiles &amp; Markdown editor ready<br>
+              <span style="color:#4f8ef7;">→ Directory:</span> Public &amp; member views active<br>
+              <span style="color:#ffd166;">★ Admin Dashboard:</span> 1-click applicant approvals
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip">
+      <div class="wrap strip-grid">
+        <div class="strip-item"><b>Applications &amp; Approvals</b><span>Review applicants and approve or reject fast.</span></div>
+        <div class="strip-item"><b>Membership Levels</b><span>Individual and Corporate tiers with instant control.</span></div>
+        <div class="strip-item"><b>Member Portal &amp; Editor</b><span>Personal dashboard, photo uploads, and live preview writing.</span></div>
+        <div class="strip-item"><b>100% Data Ownership</b><span>Stored directly on your WordPress site—no third parties.</span></div>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="wrap center">
+        <div class="section-tag">Key features</div>
+        <h2 class="section-title">Everything a membership site needs</h2>
+        <p class="section-lead">Built for site owners who don't want to learn code, and clean enough for developers to extend.</p>
+        <div class="features">
+          <article class="card"><div class="icon">✅</div><h3>Applications and approvals</h3><p>Visitors apply online. You approve or reject from one list. Or add members yourself.</p></article>
+          <article class="card"><div class="icon">🏢</div><h3>Membership levels</h3><p>Individual and Corporate levels, with suspend and reinstate in one click.</p></article>
+          <article class="card"><div class="icon">👤</div><h3>Member portal</h3><p>A personal welcome, a menu bar, and a details form for every member.</p></article>
+          <article class="card"><div class="icon">🖼️</div><h3>Profile photos</h3><p>Members upload a photo. It is resized automatically for the directory and their profile.</p></article>
+          <article class="card"><div class="icon">✍️</div><h3>Markdown editor</h3><p>A friendly toolbar with live preview. No code knowledge needed.</p></article>
+          <article class="card"><div class="icon">📰</div><h3>Posts that go live</h3><p>Approved member posts become regular blog posts that anyone can read.</p></article>
+          <article class="card"><div class="icon">🔍</div><h3>Member directory</h3><p>A searchable list with photo cards, country and level filters, and member profiles.</p></article>
+          <article class="card"><div class="icon">🧭</div><h3>Smart menus</h3><p>Join and Login disappear for logged-in users. The Member Directory stays visible to all.</p></article>
+          <article class="card"><div class="icon">🧹</div><h3>Clean removal</h3><p>Deleting the plugin removes its data. Approved posts stay on your site.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="how">
+      <div class="wrap how-grid">
+        <div>
+          <div class="section-tag">How it works</div>
+          <h2 class="section-title">Up and running in about five minutes</h2>
+          <p class="section-lead" style="margin-left:0;text-align:left">Simple setup with automated page creation and intuitive member workflows.</p>
+          <div class="steps">
+            <div class="step"><div class="num">1</div><div><h3>Install the plugin</h3><p>Upload the ZIP from the releases page and click Activate.</p></div></div>
+            <div class="step"><div class="num">2</div><div><h3>Pages are created for you</h3><p>Join, Member Directory, and Member Portal are ready to use.</p></div></div>
+            <div class="step"><div class="num">3</div><div><h3>Approve your members</h3><p>Review applications under Memberships, or add members yourself.</p></div></div>
+            <div class="step"><div class="num">4</div><div><h3>Members start contributing</h3><p>Approved posts appear on your blog for everyone to read.</p></div></div>
+          </div>
+        </div>
+        <div class="access-box">
+          <div class="section-tag">Access Control</div>
+          <h3>Who sees what</h3>
+          <div class="access-item">
+            <b>Logged-out visitors</b>
+            <p>See the Join page, the public part of the directory, and published member posts.</p>
+          </div>
+          <div class="access-item">
+            <b>Approved members</b>
+            <p>See the full directory, photos and bios, the member portal, and the Markdown editor.</p>
+          </div>
+          <div class="access-item">
+            <b>Administrators</b>
+            <p>Manage everything from the Memberships page.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <div class="wrap faq-wrap center">
+        <div class="section-tag">FAQ</div>
+        <h2 class="section-title">Frequently asked questions</h2>
+        <p class="section-lead">Quick answers. The full guide is in the help documentation.</p>
+        <div style="text-align:left">
+          <details><summary>Does it send emails?</summary><p>No. You share login details with new members yourself, so there is no email setup to manage.</p></details>
+          <details><summary>Do I need to know how to code?</summary><p>No. Everything is managed from the Memberships page in your dashboard.</p></details>
+          <details><summary>Can members edit their posts after approval?</summary><p>No. They delete the post and submit a new version for approval.</p></details>
+          <details><summary>What do I need on my hosting?</summary><p>WordPress 6.0 or newer, PHP 8.1 or newer, and the GD image library (enabled on most hosts).</p></details>
+          <details><summary>Is it free?</summary><p>Yes. It is released under the GPL-2.0-or-later license.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="requirements" id="requirements">
+      <div class="wrap req-grid">
+        <div>
+          <div class="section-tag">Technical requirements</div>
+          <h2 class="section-title">What your server needs</h2>
+          <ul class="list">
+            <li><span class="check">✓</span> WordPress 6.0 or newer</li>
+            <li><span class="check">✓</span> PHP 8.1 or newer</li>
+            <li><span class="check">✓</span> GD or Imagick PHP image library (for automatic profile photo resizing)</li>
+            <li><span class="check">✓</span> Standard WordPress hosting—no external accounts needed</li>
+          </ul>
+          <a class="pill secondary" href="docs/HELP.md" target="_blank" rel="noopener noreferrer">View Documentation (HELP.md)</a>
+        </div>
+        <div class="download-card" style="background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;padding:36px;border-radius:24px;box-shadow:var(--shadow);">
+          <div class="section-tag" style="color:#c9fff6;">Ready to build?</div>
+          <h2 style="font-size:32px;margin-bottom:10px;color:#fff;">Download WP Memberships 3.1</h2>
+          <p style="opacity:.92;margin-bottom:22px;font-size:15px;">Turn your WordPress site into a members-only hub in minutes. Download the release ZIP or inspect source on GitHub.</p>
+          <a class="pill" href="https://github.com/aatayyab/wpmemberships/releases/latest" target="_blank" rel="noopener noreferrer" style="background:#fff;color:var(--blue);margin-right:10px;margin-bottom:10px;">Download ZIP</a>
+          <a class="pill" href="brochure.html" style="background:#fff;color:var(--blue);margin-bottom:10px;">Open Brochure</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="wrap contact-grid">
+        <div>
+          <div class="section-tag">Contact &amp; Support</div>
+          <h2 class="section-title">Questions, feedback, or custom requirements?</h2>
+          <p class="lead">Reach out directly for assistance with deployment, troubleshooting, or custom WordPress architecture.</p>
+        </div>
+        <div class="contact-card">
+          <b>Amir Ali Tayyab</b>
+          <a href="mailto:aatayyab@yahoo.com">aatayyab@yahoo.com</a>
+          <a href="tel:+14074341786">+1-407-434-1786</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>© 2026 WP Memberships 3.1. Released under GPL-2.0-or-later.</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+</body>
+</html>
